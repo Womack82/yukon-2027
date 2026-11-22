@@ -1,9 +1,9 @@
 /* Yukon 2027 – service worker
-   - Cache-first pour la coquille de l'app (HTML, manifest, icônes)
-   - Stale-while-revalidate pour Google Fonts
-   - Repli sur index.html hors-ligne pour les navigations */
+   - Réseau d'abord pour la page et le manifest (délai max 4 s), repli sur le cache hors-ligne
+   - Cache d'abord pour les icônes
+   - Stale-while-revalidate pour Google Fonts */
 
-const CACHE = 'yukon2027-v3';
+const CACHE = 'yukon2027-v4';
 const FONT_CACHE = 'yukon2027-fonts-v1';
 const SHELL = [
   './',
@@ -55,7 +55,16 @@ self.addEventListener('fetch', (event) => {
 
   if (url.origin !== self.location.origin) return;
 
-  // Coquille de l'app : cache d'abord, puis réseau, puis repli sur index.html
+  // Page, manifest et service worker : réseau d'abord pour que les mises à jour
+  // arrivent dès la 1re ouverture. Si le réseau ne répond pas en 4 s (ou pas du
+  // tout, sur la rivière), on sert la copie en cache.
+  const isPage = req.mode === 'navigate' || /\/(index\.html|manifest\.json)?$/.test(url.pathname);
+  if (isPage) {
+    event.respondWith(networkFirst(req));
+    return;
+  }
+
+  // Icônes et autres fichiers : cache d'abord, puis réseau
   event.respondWith(
     caches.match(req, { ignoreSearch: true }).then((cached) => {
       if (cached) return cached;
@@ -67,7 +76,26 @@ self.addEventListener('fetch', (event) => {
           }
           return res;
         })
-        .catch(() => (req.mode === 'navigate' ? caches.match('./index.html') : undefined));
+        .catch(() => undefined);
     })
   );
 });
+
+async function networkFirst(req) {
+  const cache = await caches.open(CACHE);
+  const key = req.mode === 'navigate' ? './index.html' : req;
+  try {
+    const res = await Promise.race([
+      fetch(req, { cache: 'no-cache' }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000)),
+    ]);
+    if (res && res.ok) {
+      cache.put(key, res.clone());
+      return res;
+    }
+    throw new Error('bad response');
+  } catch (e) {
+    const cached = (await cache.match(key, { ignoreSearch: true })) || (await cache.match('./index.html'));
+    return cached || Response.error();
+  }
+}
