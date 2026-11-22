@@ -178,6 +178,9 @@ main:focus { outline: none; }
 }
 .card-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 12px; }
 .card-h h2 { font-size: 18px; font-weight: 800; }
+.cat-title { display: flex; align-items: center; gap: 10px; }
+.cat-ico { display: inline-grid; place-items: center; width: 36px; height: 36px; flex: none; border-radius: 10px; background: var(--sage); color: var(--text); }
+.cat-ico .ico { width: 20px; height: 20px; }
 .count { color: var(--muted); font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .muted { color: var(--muted); }
 .note { color: var(--muted); font-size: 14px; margin-top: 2px; }
@@ -714,6 +717,15 @@ const ICONS = {
   upload: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/>',
   user: '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
   refresh: '<path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/>',
+  /* Icônes des catégories de matériel */
+  'cat-canot': '<path d="M1.5 12.5c3 1.2 6.5 1.8 10.5 1.8s7.5-.6 10.5-1.8c-1.4 3.2-5.2 5-10.5 5s-9.1-1.8-10.5-5z"/><path d="M8 3l6 12.5"/><path d="M14 15.5l1.6 3.3a1.2 1.2 0 0 1-2.2 1L12 16.7"/><path d="M6.6 3.7 9.4 2.3"/>',
+  'cat-camper': '<path d="M3.5 21 14 3"/><path d="M20.5 21 10 3"/><path d="M15.5 21 12 15l-3.5 6"/><path d="M2 21h20"/>',
+  'cat-tete': '<circle cx="6" cy="15" r="4"/><circle cx="18" cy="15" r="4"/><path d="M14 15a2 2 0 0 0-2-1 2 2 0 0 0-2 1"/><path d="M2.5 13 5 7c.7-1.3 1.4-2 3-2"/><path d="M21.5 13 19 7c-.7-1.3-1.5-2-3-2"/>',
+  'cat-haut': '<path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>',
+  'cat-bas': '<path d="M6.5 2h11l1.5 20h-4.5L12 10l-2.5 12H5z"/><path d="M6.3 6h11.4"/>',
+  'cat-pieds': '<path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/><path d="M16 17h4"/><path d="M4 13h4"/>',
+  'cat-trousse': '<rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M12 11v6"/><path d="M9 14h6"/>',
+  'cat-vie': '<path d="M12 2c1 3 2.5 3.5 3.5 4.5A5 5 0 0 1 17 10a5 5 0 1 1-10 0c0-.3 0-.6.1-.9a2 2 0 1 0 3.3-2C8 4.5 11 2 12 2Z"/><path d="m5 22 14-4"/><path d="m5 18 14 4"/>',
   users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
   undo: '<path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>',
 };
@@ -722,7 +734,7 @@ const icon = (name) => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
 /* =========================================================
    2. État et sauvegarde
    ========================================================= */
-const APP_VERSION = '1.1';   // à augmenter à chaque publication (1.2, 1.3…)
+const APP_VERSION = '1.2';   // à augmenter à chaque publication (1.2, 1.3…)
 
 /* Taxes ajoutées au prix trouvé sur la page d'un magasin */
 const TAXES = [
@@ -1018,7 +1030,7 @@ function renderMateriel() {
   for (const g of groups) {
     const ok = g.items.filter(settled).length;
     h += `<section class="card" aria-labelledby="cat-${g.cat.id}">
-      <div class="card-h"><h2 id="cat-${g.cat.id}">${esc(g.cat.name)}</h2><span class="count" aria-label="${ok} réglés sur ${g.items.length}">${ok}/${g.items.length}</span></div>
+      <div class="card-h"><h2 class="cat-title" id="cat-${g.cat.id}"><span class="cat-ico">${icon('cat-' + g.cat.id)}</span>${esc(g.cat.name)}</h2><span class="count" aria-label="${ok} réglés sur ${g.items.length}">${ok}/${g.items.length}</span></div>
       <ul class="items">${g.shown.map(itemHTML).join('')}</ul>
     </section>`;
   }
@@ -1061,7 +1073,7 @@ function renderDepart() {
   for (const g of byCat(list)) {
     const c = g.items.filter((it) => state.pack[it.id]).length;
     h += `<section class="card" aria-labelledby="pk-${g.cat.id}">
-      <div class="card-h"><h2 id="pk-${g.cat.id}">${esc(g.cat.name)}</h2><span class="count">${c}/${g.items.length}</span></div>
+      <div class="card-h"><h2 class="cat-title" id="pk-${g.cat.id}"><span class="cat-ico">${icon('cat-' + g.cat.id)}</span>${esc(g.cat.name)}</h2><span class="count">${c}/${g.items.length}</span></div>
       <ul class="pack-list">${g.items.map((it) => {
         const on = !!state.pack[it.id];
         return `<li><label class="pack-row${on ? ' on' : ''}"><input type="checkbox" data-chk="pack" data-id="${esc(it.id)}" data-key="pack-${esc(it.id)}" ${on ? 'checked' : ''}><span class="txt"><span class="nm">${esc(it.name)}</span>${packTags(it)}</span></label></li>`;
