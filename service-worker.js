@@ -3,7 +3,7 @@
    - Stale-while-revalidate pour Google Fonts
    - Repli sur index.html hors-ligne pour les navigations */
 
-const CACHE = 'yukon2027-v1';
+const CACHE = 'yukon2027-v2';
 const FONT_CACHE = 'yukon2027-fonts-v1';
 const SHELL = [
   './',
