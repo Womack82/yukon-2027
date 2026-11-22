@@ -216,6 +216,13 @@ main:focus { outline: none; }
 .chip[aria-pressed="true"] { background: var(--chip-on-bg); color: var(--chip-on-fg); border-color: transparent; }
 .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
 .toolbar .btn { margin-left: auto; }
+/* Filtres du Matériel : les pastilles s'étirent pour remplir chaque ligne,
+   le bouton « Copier » passe dessous sur toute la largeur (mobile) */
+.toolbar.col { flex-direction: column; align-items: stretch; }
+.toolbar.col .chips { width: 100%; }
+.toolbar.col .chip { flex: 1 1 0; min-width: 96px; padding-inline: 8px; }
+.toolbar.col .btn { margin-left: 0; }
+@media (min-width: 640px) { .toolbar.col .btn { align-self: flex-end; } }
 
 .tag {
   display: inline-block;
@@ -296,20 +303,21 @@ input[type="checkbox"] { width: 22px; height: 22px; margin: 0; accent-color: var
 .item-title { font-weight: 600; }
 .item-title .tag { margin-left: 6px; }
 .struck { text-decoration: line-through; color: var(--muted); }
+/* Quatre boutons distincts, chacun encadré, avec un espace entre eux */
 .seg {
-  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px;
-  margin-top: 10px; padding: 4px;
-  background: var(--track); border-radius: 12px;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px;
+  margin-top: 10px;
 }
 .seg-btn {
   min-height: 44px; padding: 4px 2px;
-  border: 0; border-radius: 9px;
-  background: transparent; color: var(--text);
+  border: 1px solid var(--line); border-radius: 10px;
+  background: var(--card); color: var(--text);
+  box-shadow: 0 1px 2px rgba(19, 33, 26, .06);
   font-size: 13px; font-weight: 600; line-height: 1.15;
   cursor: pointer;
 }
-.seg-btn:hover { background: var(--card); }
-.seg-btn[aria-pressed="true"] { color: var(--on-st); font-weight: 800; }
+.seg-btn:hover { border-color: var(--muted); }
+.seg-btn[aria-pressed="true"] { color: var(--on-st); font-weight: 800; border-color: transparent; box-shadow: none; }
 .seg-btn[aria-pressed="true"].sb-have { background: var(--have); }
 .seg-btn[aria-pressed="true"].sb-buy { background: var(--buy); }
 .seg-btn[aria-pressed="true"].sb-borrow { background: var(--borrow); }
@@ -887,7 +895,7 @@ function renderMateriel() {
       <div class="counter c-borrow"><span class="n">${s.borrowOpen}</span><span class="l">à emprunter</span></div>
     </div>
   </section>
-  <div class="toolbar">
+  <div class="toolbar col">
     <div class="chips" role="group" aria-label="Filtrer les items">
       ${filters.map(([f, l]) => `<button type="button" class="chip" data-act="filter" data-f="${f}" data-key="filter-${f}" aria-pressed="${ui.filter === f}">${l}</button>`).join('')}
     </div>
