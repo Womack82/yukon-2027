@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Canot orange sur la rivière, devant des montagnes et des épinettes">
+<rect width="512" height="512" fill="#1c3a2d"></rect>
+<circle cx="372" cy="150" r="54" fill="#e3622a" opacity="0.9"></circle>
+<path d="M0 300 L110 196 L190 250 L296 132 L398 232 L512 168 L512 512 L0 512 Z" fill="#2c5040"></path>
+<path d="M296 132 L322 160 L306 158 L296 168 L284 158 L270 160 Z" fill="#dbe3c4"></path>
+<g fill="#0f2419">
+<path d="M20 330 L44 250 L68 330 Z"></path>
+<path d="M58 330 L88 226 L118 330 Z"></path>
+<path d="M108 330 L130 266 L152 330 Z"></path>
+<path d="M360 330 L384 258 L408 330 Z"></path>
+<path d="M398 330 L430 220 L462 330 Z"></path>
+<path d="M452 330 L476 262 L500 330 Z"></path>
+<path d="M0 322 L512 322 L512 336 L0 336 Z"></path>
+</g>
+<path d="M0 334 L512 334 L512 512 L0 512 Z" fill="#24493a"></path>
+<g stroke="#dbe3c4" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.55">
+<path d="M56 442 Q71 432 86 442 T116 442 T146 442"></path>
+<path d="M336 456 Q351 446 366 456 T396 456 T426 456"></path>
+<path d="M186 482 Q201 472 216 482 T246 482 T276 482 T306 482"></path>
+</g>
+<path d="M92 360 Q256 418 420 360 Q414 386 390 396 Q256 438 122 396 Q98 386 92 360 Z" fill="#e3622a"></path>
+<path d="M92 360 Q256 418 420 360" stroke="#f6a57c" stroke-width="7" fill="none" stroke-linecap="round"></path>
+<path d="M240 314 L329 424" stroke="#dbe3c4" stroke-width="10" stroke-linecap="round"></path>
+<path d="M231 322 L249 306" stroke="#dbe3c4" stroke-width="12" stroke-linecap="round"></path>
+<ellipse cx="352" cy="452" rx="18" ry="42" fill="#dbe3c4" transform="rotate(-39 352 452)"></ellipse>
+<path d="M300 456 Q315 446 330 456 T360 456 T390 456 L390 512 L300 512 Z" fill="#24493a"></path>
+<path d="M306 456 Q321 446 336 456 T366 456 T396 456 T426 456" stroke="#dbe3c4" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.8"></path>
+</svg>

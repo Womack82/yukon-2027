@@ -1,0 +1,1365 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Yukon 2027</title>
+<meta name="description" content="Préparation de l'expédition de canot-camping sur la rivière Yukon, 19 – 31 août 2027.">
+<meta name="theme-color" content="#1c3a2d" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#11261c" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Yukon 2027">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+
+<style>
+/* =========================================================
+   1. Palette et bases
+   ========================================================= */
+:root {
+  --bg: #f4fbf4;
+  --card: #ffffff;
+  --card-border: rgba(27, 56, 43, .06);
+  --text: #13211a;
+  --muted: #5b6b62;
+  --line: #dce3d8;
+  --sage: #dbe3c4;
+  --track: #e8eee5;
+  --field: #ffffff;
+  --accent: #e3622a;
+  --btn: #c24c18;          /* orange foncé : texte blanc lisible (AA) */
+  --on-btn: #ffffff;
+  --have: #2b7749;
+  --buy: #c24c18;
+  --borrow: #2862a6;
+  --todo: #8a958e;
+  --skip: #5b6b62;
+  --on-st: #ffffff;
+  --buy-bg: #fcefe7;
+  --borrow-bg: #eaf1fa;
+  --have-bg: #e5f2ea;
+  --chip-on-bg: #1c3a2d;
+  --chip-on-fg: #eef3ea;
+  --hdr: #1c3a2d;
+  --shadow: 0 1px 2px rgba(19, 33, 26, .05), 0 6px 18px rgba(19, 33, 26, .05);
+  --f-body: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --f-cond: 'Barlow Condensed', 'Arial Narrow', 'Roboto Condensed', 'Helvetica Neue', system-ui, sans-serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1712;
+    --card: #15231c;
+    --card-border: rgba(255, 255, 255, .05);
+    --text: #e4ebe5;
+    --muted: #98a99f;
+    --line: #263a30;
+    --sage: #33452d;
+    --track: #1f3027;
+    --field: #0f1b15;
+    --btn: #e3622a;
+    --on-btn: #1a0c05;
+    --have: #62c08a;
+    --buy: #f08b57;
+    --borrow: #74a9ec;
+    --todo: #6c7d74;
+    --skip: #98a99f;
+    --on-st: #0d1712;
+    --buy-bg: #2b1d15;
+    --borrow-bg: #16212f;
+    --have-bg: #17301f;
+    --chip-on-bg: #e4ebe5;
+    --chip-on-fg: #0d1712;
+    --hdr: #11261c;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3);
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 16px/1.5 var(--f-body);
+  overflow-x: hidden;
+}
+h1, h2, h3, p { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+button, input, select { font: inherit; color: inherit; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.ico { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.wrap { max-width: 920px; margin-inline: auto; padding-inline: max(4vw, 16px); }
+
+/* =========================================================
+   2. En-tête (style d'origine)
+   ========================================================= */
+.hdr {
+  position: relative;
+  overflow: hidden;
+  background: var(--hdr);
+  color: #eef3ea;
+  padding-top: env(safe-area-inset-top);
+}
+.hdr-in {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  padding-top: 28px;
+  padding-bottom: 84px;
+}
+.hdr h1 {
+  font: 700 clamp(34px, 6vw, 50px)/1.05 var(--f-cond);
+  letter-spacing: .01em;
+}
+.hdr .sub { color: #c9d6c4; font-size: 16px; margin-top: 4px; }
+.ios-hint { color: #c9d6c4; font-size: 13px; margin-top: 8px; opacity: .9; }
+.countdown { text-align: right; }
+.cd-n { font: 700 clamp(36px, 7vw, 52px)/1 var(--f-cond); color: #ffb48c; }
+.cd-l { font-size: 14px; color: #c9d6c4; margin-top: 2px; }
+@media (max-width: 600px) { .countdown { text-align: left; } }
+.mtn {
+  position: absolute;
+  inset: auto 0 0 0;
+  width: 100%;
+  height: 120px;
+  pointer-events: none;
+  display: block;
+}
+.install {
+  position: absolute;
+  z-index: 2;
+  top: calc(env(safe-area-inset-top) + 12px);
+  right: max(4vw, 16px);
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 0; border-radius: 999px;
+  background: #e3622a; color: #fff;
+  font-weight: 700; font-size: 14px;
+  cursor: pointer;
+}
+.install .ico { width: 16px; height: 16px; }
+.install::before { content: ''; position: absolute; inset: -4px; } /* cible tactile ≥ 44 px */
+
+/* =========================================================
+   3. Mise en page, cartes, contrôles communs
+   ========================================================= */
+main {
+  display: block;
+  padding-top: 20px;
+  padding-bottom: calc(110px + env(safe-area-inset-bottom));
+}
+main:focus { outline: none; }
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.card-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+.card-h h2 { font-size: 18px; font-weight: 800; }
+.count { color: var(--muted); font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.note { color: var(--muted); font-size: 14px; margin-top: 2px; }
+.small { font-size: 14px; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 0 16px;
+  border: 1px solid var(--line); border-radius: 12px;
+  background: var(--card); color: var(--text);
+  font-weight: 700; font-size: 15px;
+  cursor: pointer; text-decoration: none;
+}
+.btn:hover { border-color: var(--muted); }
+.btn.primary { background: var(--btn); color: var(--on-btn); border-color: transparent; }
+.btn.primary:hover { filter: brightness(1.06); }
+.btn:disabled { opacity: .5; cursor: default; }
+.icon-btn {
+  flex: none;
+  display: inline-grid; place-items: center;
+  width: 44px; height: 44px; margin: -10px -10px -10px 0;
+  border: 0; border-radius: 10px; background: transparent; color: var(--muted);
+  cursor: pointer;
+}
+.icon-btn:hover { background: var(--track); color: var(--text); }
+.linkbtn { border: 0; background: none; padding: 0; color: var(--btn); font-weight: 700; text-decoration: underline; cursor: pointer; font-size: inherit; min-height: 24px; }
+@media (prefers-color-scheme: dark) { .linkbtn { color: var(--accent); } }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  min-height: 44px; padding: 0 14px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--card); color: var(--text);
+  font-weight: 600; font-size: 14px; cursor: pointer;
+}
+.chip[aria-pressed="true"] { background: var(--chip-on-bg); color: var(--chip-on-fg); border-color: transparent; }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
+.toolbar .btn { margin-left: auto; }
+
+.tag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 12px; font-weight: 700; line-height: 1.3;
+  white-space: nowrap;
+  vertical-align: 2px;
+}
+.tag-opt { border: 1px solid var(--line); color: var(--muted); font-weight: 600; }
+.tag-fourni { background: var(--sage); color: var(--text); }
+.tag-todo { background: var(--track); color: var(--muted); }
+.tag-buy, .tag-late { background: var(--buy-bg); color: var(--buy); }
+.tag-borrow { background: var(--borrow-bg); color: var(--borrow); }
+.tag-ok { background: var(--have-bg); color: var(--have); }
+.tag-river { background: var(--card); color: var(--text); }
+
+.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.field > span:first-child { font-size: 13px; font-weight: 600; color: var(--muted); }
+input[type="text"], input[type="url"], input[type="date"], select {
+  width: 100%; min-width: 0;
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 1px solid var(--line); border-radius: 10px;
+  background: var(--field); color: var(--text);
+  font-size: 16px;
+}
+input[type="date"] { width: auto; max-width: 100%; }
+input::placeholder { color: var(--muted); opacity: .8; }
+input[type="checkbox"] { width: 22px; height: 22px; margin: 0; accent-color: var(--have); cursor: pointer; flex: none; }
+.money { position: relative; display: block; }
+.money input { padding-right: 28px; text-align: right; font-variant-numeric: tabular-nums; }
+.money > span { position: absolute; right: 11px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.check { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 600; cursor: pointer; }
+
+/* Barres de progression : la seule animation */
+.bar { display: flex; height: 12px; border-radius: 999px; overflow: hidden; background: var(--track); }
+.bar > span { display: block; height: 100%; transition: width .5s ease; }
+.b-ok { background: var(--have); }
+.b-buy { background: var(--buy); }
+.b-borrow { background: var(--borrow); }
+@media (prefers-reduced-motion: reduce) { .bar > span { transition: none; } }
+
+.counters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+.counter { border-radius: 12px; padding: 10px 8px; text-align: center; background: var(--track); }
+.counter .n { display: block; font-size: 24px; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.counter .l { display: block; font-size: 13px; color: var(--muted); }
+.counter.c-buy { background: var(--buy-bg); }
+.counter.c-buy .n, .counter.c-buy .l { color: var(--buy); }
+.counter.c-borrow { background: var(--borrow-bg); }
+.counter.c-borrow .n, .counter.c-borrow .l { color: var(--borrow); }
+.counter.c-river { background: var(--sage); }
+.counter.c-river .l { color: var(--text); }
+
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 8px; font-size: 13px; color: var(--muted); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.big { font-size: 18px; }
+.big strong { font-size: 26px; font-weight: 800; }
+.empty { text-align: center; color: var(--muted); padding: 24px 12px; }
+
+/* =========================================================
+   4. Matériel
+   ========================================================= */
+.items { display: grid; gap: 8px; }
+.item {
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--todo);
+  border-radius: 12px;
+  padding: 12px;
+}
+.item.st-have { border-left-color: var(--have); }
+.item.st-buy { border-left-color: var(--buy); }
+.item.st-borrow { border-left-color: var(--borrow); }
+.item.st-skip { border-left-color: var(--line); }
+.item.st-skip .nm { color: var(--muted); }
+.item.st-fourni { border-left-color: var(--sage); }
+.item-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.item-title { font-weight: 600; }
+.item-title .tag { margin-left: 6px; }
+.struck { text-decoration: line-through; color: var(--muted); }
+.seg {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px;
+  margin-top: 10px; padding: 4px;
+  background: var(--track); border-radius: 12px;
+}
+.seg-btn {
+  min-height: 44px; padding: 4px 2px;
+  border: 0; border-radius: 9px;
+  background: transparent; color: var(--text);
+  font-size: 13px; font-weight: 600; line-height: 1.15;
+  cursor: pointer;
+}
+.seg-btn:hover { background: var(--card); }
+.seg-btn[aria-pressed="true"] { color: var(--on-st); font-weight: 800; }
+.seg-btn[aria-pressed="true"].sb-have { background: var(--have); }
+.seg-btn[aria-pressed="true"].sb-buy { background: var(--buy); }
+.seg-btn[aria-pressed="true"].sb-borrow { background: var(--borrow); }
+.seg-btn[aria-pressed="true"].sb-skip { background: var(--skip); }
+.extra {
+  display: grid;
+  grid-template-columns: auto minmax(0, 150px) minmax(0, 1fr);
+  gap: 8px 14px;
+  align-items: end;
+  margin-top: 10px;
+}
+.extra.borrow { grid-template-columns: auto minmax(0, 1fr); }
+.extra .full { grid-column: 1 / -1; }
+.ext-link { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; color: var(--borrow); font-weight: 700; font-size: 14px; }
+.ext-link .ico { width: 16px; height: 16px; }
+@media (max-width: 560px) {
+  .extra { grid-template-columns: auto minmax(0, 1fr); }
+  .extra .f-url { grid-column: 1 / -1; }
+}
+.add-row { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr) auto; gap: 10px; align-items: end; }
+@media (max-width: 600px) {
+  .add-row { grid-template-columns: minmax(0, 1fr); }
+  .add-row .btn { width: 100%; }
+}
+.add h2 { font-size: 18px; font-weight: 800; margin-bottom: 10px; }
+
+/* =========================================================
+   5. Départ
+   ========================================================= */
+.pack-list { display: grid; gap: 4px; }
+.pack-row {
+  display: flex; align-items: center; gap: 12px;
+  min-height: 52px; padding: 6px 10px;
+  border-radius: 12px; cursor: pointer;
+}
+.pack-row:hover { background: var(--track); }
+.pack-row input { width: 26px; height: 26px; }
+.pack-row .txt { flex: 1; min-width: 0; }
+.pack-row .tag { margin-left: 6px; }
+.pack-row.on .nm { color: var(--muted); }
+.done-msg { margin-top: 10px; font-weight: 800; color: var(--have); }
+
+/* =========================================================
+   6. Tâches
+   ========================================================= */
+.tasks { display: grid; gap: 10px; }
+.task { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: start; margin: 0; }
+.task-chk { display: grid; place-items: center; width: 44px; height: 44px; margin: -8px 0 0 -8px; cursor: pointer; }
+.task-chk input { width: 26px; height: 26px; }
+.task-title { font-weight: 700; }
+.task.done .task-title { text-decoration: line-through; color: var(--muted); }
+.task.done { opacity: .8; }
+.who { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 14px; margin-top: 2px; }
+.who .ico { width: 16px; height: 16px; }
+.due { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 8px; }
+.due label { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.task-add { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 200px) auto auto; gap: 10px; align-items: end; }
+@media (max-width: 700px) {
+  .task-add { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .task-add .f-title { grid-column: 1 / -1; }
+  .task-add .btn { grid-column: 1 / -1; }
+}
+
+/* =========================================================
+   7. Budget
+   ========================================================= */
+.budget-title { font-size: clamp(22px, 5vw, 28px); font-weight: 800; line-height: 1.2; }
+.figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-top: 14px; }
+.fig { background: var(--track); border-radius: 12px; padding: 10px 12px; }
+.fig .v { display: block; font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.fig .k { display: block; font-size: 13px; color: var(--muted); }
+.fig.f-buy { background: var(--buy-bg); }
+.fig.f-buy .v { color: var(--buy); }
+.blines { margin-top: 4px; }
+.bline {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+.bline:first-child { border-top: 0; }
+.bl-label { font-weight: 700; }
+.bl-sub { font-size: 13px; color: var(--muted); }
+.bl-bar { grid-column: 1 / -1; height: 6px; border-radius: 999px; background: var(--track); overflow: hidden; }
+.bl-bar > span { display: block; height: 100%; background: var(--have); border-radius: 999px; }
+.bl-amt { text-align: right; }
+.bl-amt .money { width: 120px; margin-left: auto; }
+.bl-orig { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.bline.calc { background: var(--buy-bg); border-radius: 12px; padding: 12px; margin: 6px -4px; border-top: 0; }
+.bline.calc + .bline { border-top: 0; }
+.bline.calc .bl-bar > span { background: var(--buy); }
+.calc-amt { font-weight: 800; font-size: 17px; color: var(--buy); display: inline-block; min-height: 44px; line-height: 44px; font-variant-numeric: tabular-nums; }
+.bline.total { background: var(--sage); border-radius: 12px; padding: 14px 12px; margin: 6px -4px 0; border-top: 0; font-weight: 800; font-size: 18px; }
+.bline.total .amt { text-align: right; font-variant-numeric: tabular-nums; }
+.budget-note { font-size: 14px; color: var(--muted); margin-top: 12px; }
+.backup-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+
+/* =========================================================
+   8. Itinéraire
+   ========================================================= */
+.days { display: grid; gap: 6px; }
+.day { display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 14px; padding: 12px; border-radius: 12px; }
+.day.river { background: var(--sage); }
+.dn { font: 700 36px/1 var(--f-cond); }
+.dn.range { font-size: 26px; }
+.dw { font-size: 13px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+.day.river .dw { color: var(--text); }
+.day ul { display: grid; gap: 2px; }
+.day li { position: relative; padding-left: 14px; }
+.day li::before { content: ''; position: absolute; left: 0; top: .65em; width: 5px; height: 5px; border-radius: 50%; background: currentColor; opacity: .5; }
+.day .tag { margin-bottom: 4px; }
+
+/* =========================================================
+   9. Barre d'onglets et toast
+   ========================================================= */
+.tabbar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;
+  background: #1b382b;
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, .12);
+}
+.tabbar-in { display: flex; justify-content: center; max-width: 640px; margin: 0 auto; }
+.tab {
+  flex: 1 1 0; min-width: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  min-height: 62px; padding: 8px 2px;
+  color: #a7c4b0; text-decoration: none;
+  font-size: 12px; font-weight: 600;
+}
+.tab .ico { width: 24px; height: 24px; }
+.tab[aria-current="page"] { color: #fb923c; font-weight: 800; }
+.tab:focus-visible { outline-offset: -3px; }
+.toast {
+  position: fixed; z-index: 50;
+  left: 50%; transform: translateX(-50%);
+  bottom: calc(76px + env(safe-area-inset-bottom));
+  width: min(520px, calc(100% - 24px));
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 8px 8px 16px; min-height: 52px;
+  background: #13211a; color: #eef3ea;
+  border-radius: 14px; box-shadow: 0 8px 24px rgba(0, 0, 0, .25);
+  font-size: 15px;
+}
+@media (prefers-color-scheme: dark) { .toast { background: #e4ebe5; color: #13211a; } }
+.toast-msg { flex: 1; min-width: 0; }
+.toast-btn {
+  min-height: 44px; padding: 0 14px;
+  border: 0; border-radius: 10px;
+  background: transparent; color: #ffb48c;
+  font-weight: 800; cursor: pointer;
+}
+@media (prefers-color-scheme: dark) { .toast-btn { color: #a8431a; } }
+</style>
+</head>
+<body>
+
+<!-- ===================== En-tête ===================== -->
+<header class="hdr">
+  <div class="hdr-in wrap">
+    <div>
+      <h1>Yukon 2027</h1>
+      <p class="sub">19 – 31 août · Whitehorse → lac Laberge → Minto</p>
+      <p class="ios-hint" id="ios-hint" hidden>Pour installer l'app : Partager › « Sur l'écran d'accueil »</p>
+    </div>
+    <div class="countdown">
+      <div class="cd-n" id="cd-n">–</div>
+      <div class="cd-l" id="cd-l">jours avant Whitehorse</div>
+    </div>
+  </div>
+  <button type="button" class="install" id="install" data-act="install" hidden>
+    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+    Installer
+  </button>
+  <svg class="mtn" viewBox="0 0 1200 120" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs>
+      <symbol id="spr" viewBox="0 0 30 60" width="30" height="60">
+        <path d="M15 0 L24 18 H19 L27 34 H21 L30 52 H17 V60 H13 V52 H0 L9 34 H3 L11 18 H6Z"/>
+      </symbol>
+    </defs>
+    <path d="M0 120 L0 70 L120 44 L210 66 L330 34 L430 62 L520 46 L640 72 L760 38 L860 64 L980 44 L1090 66 L1200 40 V120Z" fill="#2c5040" opacity=".7"/>
+    <g fill="#0f2419" id="spruces"></g>
+  </svg>
+</header>
+
+<main id="main" class="wrap" tabindex="-1"></main>
+
+<!-- ===================== Barre d'onglets ===================== -->
+<nav class="tabbar" aria-label="Sections">
+  <div class="tabbar-in" id="tabbar"></div>
+</nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden>
+  <span class="toast-msg" id="toast-msg"></span>
+  <button type="button" class="toast-btn" id="toast-undo" data-act="toast-undo" hidden>Annuler</button>
+</div>
+
+<input type="file" id="import-file" accept="application/json,.json" hidden>
+
+<noscript><p style="padding:16px">Cette application a besoin de JavaScript.</p></noscript>
+
+<script>
+'use strict';
+
+/* =========================================================
+   1. Données de départ
+   ========================================================= */
+
+// [nom, drapeaux (F = fourni, O = facultatif), note]
+const CATS = [
+  { id: 'canot', name: 'Pour le canot', items: [
+    ['Pagaie', 'F'],
+    ['Veste de flottaison (VFI)', 'F'],
+    ['Écope', 'F'],
+    ['Sac à corde', 'F'],
+    ['Sac étanche 115 L', 'F', 'Partagé à deux, pour le camp et les vêtements'],
+    ['Sac étanche 35 L', '', 'À déterminer — sac perso pour la journée sur l\'eau'],
+  ]},
+  { id: 'camper', name: 'Pour camper', items: [
+    ['Tente 2 places', '', 'Tente Marmot Limelight neuve à vendre par Édouard (300 $)'],
+    ['Sac de couchage, confort 5 °C ou moins'],
+    ['Matelas de camping'],
+    ['Liner', 'O'],
+    ['Oreiller(s)'],
+  ]},
+  { id: 'tete', name: 'Tête et cou', items: [
+    ['Lunettes de soleil + étui'],
+    ['Lunettes de vue ou lentilles', 'O', 'Si nécessaire'],
+    ['Casquette ou chapeau'],
+    ['Foulard tubulaire (buff)'],
+    ['Bonnet pour le soir'],
+  ]},
+  { id: 'haut', name: 'Haut du corps', items: [
+    ['T-shirt manches courtes, jour', '', 'Mérino de préférence'],
+    ['T-shirt manches longues, soir', '', 'Mérino de préférence'],
+    ['Couche intermédiaire, jour'],
+    ['Couche intermédiaire chaude, soir'],
+    ['Veste ou chemise épaisse pour le camp et le feu'],
+    ['Manteau imperméable', '', 'Gore-Tex ou équivalent'],
+    ['Gants de travail', 'O'],
+    ['Gants chauds en laine', 'O'],
+  ]},
+  { id: 'bas', name: 'Bas du corps', items: [
+    ['Pantalon technique de rando, jour'],
+    ['Pantalon imperméable', '', 'Gore-Tex ou équivalent'],
+    ['Pantalon pour le soir', 'O'],
+    ['Couche de base pour dormir'],
+    ['Sous-vêtements'],
+    ['Maillot de bain', 'O'],
+  ]},
+  { id: 'pieds', name: 'Pieds', items: [
+    ['Bottes d\'eau'],
+    ['Souliers pour le camp', '', 'Rando ou sport'],
+    ['Crocs ou gougounes', 'O'],
+    ['Chaussettes ++', '', 'Jour et soir'],
+  ]},
+  { id: 'trousse', name: 'Trousse personnelle', items: [
+    ['Brosse à dents et dentifrice'],
+    ['Savon biodégradable'],
+    ['Serviette'],
+    ['Crème solaire'],
+    ['Médicaments personnels'],
+    ['Papier de toilette et Purell', 'F', 'Dans un kit spécial'],
+  ]},
+  { id: 'vie', name: 'Vie de camp', items: [
+    ['Bouteille solide type Nalgene 1 L'],
+    ['Lampe frontale + batteries neuves'],
+    ['Powerbank pour le cell'],
+    ['Sciotte', 'O'],
+    ['Couteau de camping ou multitool', 'O'],
+    ['Jumelles pour la faune', 'O'],
+    ['Montre', 'O'],
+  ]},
+];
+
+const TASKS = [
+  ['Décider du partage des tentes', 'Tous', '2027-01-15', 'Idée : Cameux + Womack ensemble, JP solo, Seb solo. Éviter d\'avoir 5 tentes.'],
+  ['Faire le tour de la liste de matériel perso', 'Tous', '2027-01-31', 'Identifier ce que chacun a et ce qui manque.'],
+  ['Acheter les billets d\'avion MTL → Whitehorse', 'JP, Cameux, Womack, Seb', '2027-02-05', 'Option 1 : Air Canada via Vancouver ou Calgary. Option 2 : Air Canada, Transat ou WestJet jusqu\'à Vancouver/Calgary + Air North avec le Connector fare.'],
+  ['Appeler son assurance pour l\'évacuation', 'JP, Cameux, Womack, Seb', '2027-03-01', 'Rivière Yukon → hôpital de Whitehorse, en bateau + route ou en hélico.'],
+  ['Confirmer le nombre de participants et de canots', 'Édouard', '2027-03-01', 'Kanoe People : 400 $ par canot + gear pour 8 jours.'],
+  ['Choisir l\'hébergement du retour', 'Édouard', '2027-04-01', 'Edgewater (400 $/nuit, 2 lits doubles) ou auberge Beez Neez (50 $/pers/nuit).'],
+  ['Acheter le Garmin SAR (60 $) si pas couvert', 'JP, Cameux, Womack, Seb', '2027-06-01', 'Pas avant juin 2027.'],
+  ['Location de voiture à Whitehorse (2 jours)', 'Édouard', '2027-06-01', 'Driving Force 150 $/jour, ou emprunter une voiture.'],
+  ['Recueillir intolérances et allergies pour le menu', 'Édouard', '2027-06-01', 'Fiche médicale individuelle envoyée plus tard.'],
+];
+const WHO = ['Tous', 'JP, Cameux, Womack, Seb', 'Édouard', 'JP', 'Cameux', 'Womack', 'Seb'];
+
+const BUDGET = [
+  { cat: 'Transports', label: 'Billets d\'avion – connecteur Air North', base: 'Forfait par personne', amt: 800 },
+  { cat: 'Transports', label: 'Transfert Whitehorse → Lower Laberge', base: 'Forfait 1 100 $', amt: 275 },
+  { cat: 'Transports', label: 'Transfert Minto → Whitehorse', base: 'Forfait 1 221 $', amt: 305.25 },
+  { cat: 'Transports', label: 'Location voiture Whitehorse', base: '2 jours', amt: 75 },
+  { cat: 'Hébergement', label: 'Airbnb avant le départ', base: '3 nuits', amt: 250 },
+  { cat: 'Hébergement', label: 'Hôtel au retour – Edgewater', base: '2 nuits, 400 $/nuit la chambre', amt: 400 },
+  { cat: 'Matériel', label: 'Canots – Kanoe People', base: '2 canots + gear, 8 jours', amt: 200 },
+  { cat: 'Matériel', label: '3e canot', base: 'Forfait TB', amt: 62.5 },
+  { cat: 'Matériel', label: 'Matériel de camp (cuisine, stockage)', base: 'Forfait TB', amt: 150 },
+  { cat: 'Nourriture', label: 'Nourriture pour la rivière', base: '8 jours', amt: 200 },
+  { cat: 'Nourriture', label: 'Alcool pour la rivière', base: '8 jours', amt: 50 },
+  { cat: 'Guide', label: 'Guidage – 8 jours', base: '210 $/jour', amt: 420 },
+  { cat: 'Sécurité', label: 'Garmin SAR', base: '60 $ par personne', amt: 60 },
+  { cat: 'Sécurité', label: 'Activation Garmin inReach + abonnement', base: '50 $ + 30 $', amt: 20 },
+];
+
+const ITIN = [
+  { d: '19', w: 'Jeu', t: ['Arrivée d\'Édouard à Whitehorse', 'Airbnb (3 nuits)', 'Gestion du matériel d\'expédition'] },
+  { d: '20', w: 'Ven', t: ['Location de voiture (2 jours)', 'Achat bouffe sèche et conditionnement', 'Arrivée de JP, Cameux, Womack et Seb en pm'] },
+  { d: '21', w: 'Sam', t: ['Découverte de Whitehorse', 'Provisions fraîches (Édouard)', 'Vérification du matériel en équipe', 'Soirée briefing'] },
+  { d: '22', w: 'Dim', river: true, t: ['Transfert Whitehorse → lac Laberge', 'Mise à l\'eau et début de la descente'] },
+  { d: '23–28', w: '6 jours', river: true, t: ['Six journées de descente de la rivière Yukon'] },
+  { d: '29', w: 'Dim', river: true, t: ['Sortie de rivière à Minto', 'Transfert Minto → Whitehorse'] },
+  { d: '30', w: 'Lun', t: ['Récupération, tri et gestion du matériel', 'Dernière soirée à Whitehorse'] },
+  { d: '31', w: 'Mar', t: ['Départ de JP, Cameux, Womack et Seb vers Montréal'] },
+];
+
+const TABS = [
+  { id: 'materiel', label: 'Matériel', icon: 'backpack' },
+  { id: 'depart', label: 'Départ', icon: 'pack' },
+  { id: 'taches', label: 'Tâches', icon: 'tasks' },
+  { id: 'budget', label: 'Budget', icon: 'wallet' },
+  { id: 'itineraire', label: 'Itinéraire', icon: 'map' },
+];
+
+/* Icônes SVG à trait (style Lucide) */
+const ICONS = {
+  backpack: '<path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M8 10h8"/><path d="M8 18h8"/><path d="M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>',
+  pack: '<path d="m16 16 2 2 4-4"/><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/>',
+  tasks: '<path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/>',
+  wallet: '<path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>',
+  map: '<path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/>',
+  x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  clipboard: '<rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>',
+  external: '<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+  plus: '<path d="M5 12h14"/><path d="M12 5v14"/>',
+  download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>',
+  upload: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/>',
+  user: '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  undo: '<path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>',
+};
+const icon = (name) => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>`;
+
+/* =========================================================
+   2. État et sauvegarde
+   ========================================================= */
+const KEY = 'yukon2027-state';
+const UI_KEY = 'yukon2027-ui';
+const STATUSES = ['have', 'buy', 'borrow', 'skip'];
+const ST_LABEL = { todo: 'À vérifier', have: 'J\'ai', buy: 'Acheter', borrow: 'Emprunter', skip: 'Pas besoin' };
+
+function seedItems() {
+  const out = [];
+  for (const c of CATS) {
+    c.items.forEach(([name, flags = '', note = ''], i) => {
+      out.push({ id: `${c.id}-${i + 1}`, cat: c.id, name, f: flags.includes('F'), o: flags.includes('O'), note });
+    });
+  }
+  return out;
+}
+function seedTasks() {
+  return TASKS.map(([title, who, due, note], i) => ({ id: `t${i + 1}`, title, who, due, note, done: false }));
+}
+function freshState() {
+  return { v: 1, items: seedItems(), gear: {}, pack: {}, tasks: seedTasks(), budget: BUDGET.map((b) => b.amt) };
+}
+const isObj = (o) => o !== null && typeof o === 'object' && !Array.isArray(o);
+
+/* Complète et nettoie un état chargé (localStorage ou import) */
+function normalize(s) {
+  const d = freshState();
+  if (!isObj(s)) return d;
+  const catIds = CATS.map((c) => c.id);
+  const items = Array.isArray(s.items)
+    ? s.items.filter((i) => isObj(i) && typeof i.id === 'string' && typeof i.name === 'string')
+        .map((i) => ({ id: i.id, cat: catIds.includes(i.cat) ? i.cat : 'vie', name: i.name, f: !!i.f, o: !!i.o, note: typeof i.note === 'string' ? i.note : '', custom: !!i.custom }))
+    : d.items;
+  const gear = {};
+  if (isObj(s.gear)) {
+    for (const [id, g] of Object.entries(s.gear)) {
+      if (!isObj(g)) continue;
+      gear[id] = {
+        s: ['todo', ...STATUSES].includes(g.s) ? g.s : 'todo',
+        done: !!g.done,
+        price: Number.isFinite(g.price) ? g.price : null,
+        url: typeof g.url === 'string' ? g.url : '',
+        from: typeof g.from === 'string' ? g.from : '',
+      };
+    }
+  }
+  const pack = {};
+  if (isObj(s.pack)) for (const [id, v] of Object.entries(s.pack)) if (v) pack[id] = true;
+  const tasks = Array.isArray(s.tasks)
+    ? s.tasks.filter((t) => isObj(t) && typeof t.id === 'string' && typeof t.title === 'string')
+        .map((t) => ({ id: t.id, title: t.title, who: WHO.includes(t.who) ? t.who : 'Tous', due: /^\d{4}-\d{2}-\d{2}$/.test(t.due) ? t.due : '', note: typeof t.note === 'string' ? t.note : '', done: !!t.done }))
+    : d.tasks;
+  const budget = BUDGET.map((b, i) => (Array.isArray(s.budget) && Number.isFinite(s.budget[i]) ? s.budget[i] : b.amt));
+  return { v: 1, items, gear, pack, tasks, budget };
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (raw) return normalize(JSON.parse(raw));
+  } catch (e) { /* données illisibles : on repart des valeurs de départ */ }
+  return freshState();
+}
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* stockage plein ou bloqué */ }
+}
+
+let state = load();
+
+/* État d'interface (filtres, dernier onglet), sans importance pour la sauvegarde */
+let ui = { filter: 'all', taskFilter: 'all', addCat: 'canot', addWho: 'Édouard', tab: 'materiel' };
+try { Object.assign(ui, JSON.parse(localStorage.getItem(UI_KEY) || '{}')); } catch (e) { /* ignoré */ }
+function saveUi() { try { localStorage.setItem(UI_KEY, JSON.stringify(ui)); } catch (e) { /* ignoré */ } }
+
+const EMPTY_GEAR = { s: 'todo', done: false, price: null, url: '', from: '' };
+const gv = (id) => state.gear[id] || EMPTY_GEAR;                 // lecture
+const gset = (id) => (state.gear[id] ||= { ...EMPTY_GEAR });      // écriture
+
+/* =========================================================
+   3. Utilitaires
+   ========================================================= */
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function fmt(n) {
+  n = n || 0;
+  return new Intl.NumberFormat('fr-CA', {
+    style: 'currency', currency: 'CAD',
+    minimumFractionDigits: Math.round(n * 100) % 100 ? 2 : 0, maximumFractionDigits: 2,
+  }).format(n);
+}
+const fmtPlain = (n) => fmt(n).replace(/[  ]/g, ' ');
+function parseNum(v) {
+  const s = String(v ?? '').replace(/[\s  $]/g, '').replace(',', '.');
+  if (s === '') return null;
+  const n = parseFloat(s);
+  return Number.isFinite(n) && n >= 0 ? Math.round(n * 100) / 100 : null;
+}
+const numStr = (n) => (n == null ? '' : String(n).replace('.', ','));
+function normUrl(v) {
+  const s = String(v || '').trim();
+  if (!s) return '';
+  return /^https?:\/\//i.test(s) ? s : 'https://' + s;
+}
+function validUrl(u) {
+  try { const x = new URL(u); return (x.protocol === 'https:' || x.protocol === 'http:') && x.hostname.includes('.'); }
+  catch (e) { return false; }
+}
+function todayISO() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+const plural = (n, one, many) => `${n} ${n > 1 ? many : one}`;
+const sum = (a) => a.reduce((t, n) => t + (n || 0), 0);
+const newId = (p) => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+
+/* Items groupés par catégorie, dans l'ordre des catégories */
+function byCat(list) {
+  return CATS.map((c) => ({ cat: c, items: list.filter((i) => i.cat === c.id) })).filter((g) => g.items.length);
+}
+
+/* Un item est « réglé » s'il est fourni, possédé, inutile, acheté ou obtenu */
+function settled(it) {
+  if (it.f) return true;
+  const x = gv(it.id);
+  return x.s === 'have' || x.s === 'skip' || ((x.s === 'buy' || x.s === 'borrow') && x.done);
+}
+
+function gearStats() {
+  const s = { total: 0, ok: 0, todo: 0, buyOpen: 0, buyOpenSum: 0, borrowOpen: 0, boughtN: 0, boughtSum: 0 };
+  for (const it of state.items) {
+    s.total++;
+    if (settled(it)) s.ok++;
+    if (it.f) continue;
+    const x = gv(it.id);
+    if (x.s === 'todo') s.todo++;
+    if (x.s === 'buy') {
+      if (x.done) { s.boughtN++; s.boughtSum += x.price || 0; }
+      else { s.buyOpen++; s.buyOpenSum += x.price || 0; }
+    }
+    if (x.s === 'borrow' && !x.done) s.borrowOpen++;
+  }
+  return s;
+}
+
+/* Barres animées : on part de la largeur précédente pour que la transition joue après un re-rendu */
+const barPrev = {};
+const barSpan = (key, cls, pct) => `<span class="${cls}" data-bar="${key}" data-w="${pct.toFixed(2)}" style="width:${barPrev[key] ?? 0}%"></span>`;
+function animateBars(root) {
+  const bars = root.querySelectorAll('[data-bar]');
+  if (!bars.length) return;
+  void root.offsetWidth; // force le calcul de la largeur de départ
+  requestAnimationFrame(() => bars.forEach((b) => { b.style.width = b.dataset.w + '%'; barPrev[b.dataset.bar] = b.dataset.w; }));
+}
+
+/* =========================================================
+   4. Rendu par onglet
+   ========================================================= */
+
+/* ---------- Matériel ---------- */
+function matchFilter(it) {
+  const x = gv(it.id);
+  switch (ui.filter) {
+    case 'todo': return !it.f && x.s === 'todo';
+    case 'buy': return !it.f && x.s === 'buy' && !x.done;
+    case 'borrow': return !it.f && x.s === 'borrow' && !x.done;
+    case 'ok': return settled(it);
+    default: return true;
+  }
+}
+
+function itemHTML(it) {
+  const x = gv(it.id);
+  const st = it.f ? 'fourni' : x.s;
+  const struck = !it.f && (x.s === 'buy' || x.s === 'borrow') && x.done;
+  let h = `<li class="item st-${st}">
+    <div class="item-top">
+      <p class="item-title"><span class="nm${struck ? ' struck' : ''}">${esc(it.name)}</span>${it.o ? '<span class="tag tag-opt">facultatif</span>' : ''}${it.f ? '<span class="tag tag-fourni">Fourni</span>' : ''}${!it.f && x.s === 'todo' ? '<span class="tag tag-todo">à vérifier</span>' : ''}</p>
+      ${it.custom ? `<button type="button" class="icon-btn" data-act="del-item" data-id="${esc(it.id)}" data-key="del-${esc(it.id)}" aria-label="Supprimer ${esc(it.name)}">${icon('x')}</button>` : ''}
+    </div>`;
+  if (it.note) h += `<p class="note">${esc(it.note)}</p>`;
+  if (!it.f) {
+    h += `<div class="seg" role="group" aria-label="Statut : ${esc(it.name)}">` +
+      STATUSES.map((s) => `<button type="button" class="seg-btn sb-${s}" data-act="status" data-id="${esc(it.id)}" data-s="${s}" data-key="st-${esc(it.id)}-${s}" aria-pressed="${x.s === s}">${ST_LABEL[s]}</button>`).join('') +
+      `</div>`;
+    if (x.s === 'buy') {
+      const ok = x.url && validUrl(x.url);
+      h += `<div class="extra">
+        <label class="check"><input type="checkbox" data-chk="done" data-id="${esc(it.id)}" data-key="done-${esc(it.id)}" ${x.done ? 'checked' : ''}> Acheté</label>
+        <label class="field"><span>Prix payé</span><span class="money"><input type="text" inputmode="decimal" autocomplete="off" data-field="price" data-id="${esc(it.id)}" data-key="price-${esc(it.id)}" value="${esc(numStr(x.price))}" placeholder="0"><span aria-hidden="true">$</span></span></label>
+        <label class="field f-url"><span>Lien</span><input type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" data-field="url" data-id="${esc(it.id)}" data-key="url-${esc(it.id)}" value="${esc(x.url)}" placeholder="https://"></label>
+        ${ok ? `<a class="ext-link full" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${icon('external')}Ouvrir le lien</a>` : ''}
+      </div>`;
+    } else if (x.s === 'borrow') {
+      h += `<div class="extra borrow">
+        <label class="check"><input type="checkbox" data-chk="done" data-id="${esc(it.id)}" data-key="done-${esc(it.id)}" ${x.done ? 'checked' : ''}> Obtenu</label>
+        <label class="field"><span>Emprunté à qui ?</span><input type="text" autocomplete="off" data-field="from" data-id="${esc(it.id)}" data-key="from-${esc(it.id)}" value="${esc(x.from)}" placeholder="Nom"></label>
+      </div>`;
+    }
+  }
+  return h + '</li>';
+}
+
+function renderMateriel() {
+  const s = gearStats();
+  const pct = (n) => (s.total ? (n / s.total) * 100 : 0);
+  const filters = [['all', 'Tout'], ['todo', 'À vérifier'], ['buy', 'À acheter'], ['borrow', 'À emprunter'], ['ok', 'Réglé']];
+  let h = `<section class="card" aria-labelledby="sum-h">
+    <p class="big" id="sum-h"><strong>${s.ok}</strong>/${s.total} items réglés</p>
+    <div class="bar" style="margin-top:12px" role="img" aria-label="${s.ok} réglés, ${s.buyOpen} à acheter, ${s.borrowOpen} à emprunter, sur ${s.total}">
+      ${barSpan('m-ok', 'b-ok', pct(s.ok))}${barSpan('m-buy', 'b-buy', pct(s.buyOpen))}${barSpan('m-borrow', 'b-borrow', pct(s.borrowOpen))}
+    </div>
+    <p class="legend"><span><i class="b-ok"></i>J'ai, fourni ou pas besoin</span><span><i class="b-buy"></i>Acheter</span><span><i class="b-borrow"></i>Emprunter</span></p>
+    <div class="counters">
+      <div class="counter"><span class="n">${s.todo}</span><span class="l">à vérifier</span></div>
+      <div class="counter c-buy"><span class="n">${s.buyOpen}</span><span class="l">à acheter${s.buyOpenSum ? ' · ' + fmt(s.buyOpenSum) : ''}</span></div>
+      <div class="counter c-borrow"><span class="n">${s.borrowOpen}</span><span class="l">à emprunter</span></div>
+    </div>
+  </section>
+  <div class="toolbar">
+    <div class="chips" role="group" aria-label="Filtrer les items">
+      ${filters.map(([f, l]) => `<button type="button" class="chip" data-act="filter" data-f="${f}" data-key="filter-${f}" aria-pressed="${ui.filter === f}">${l}</button>`).join('')}
+    </div>
+    <button type="button" class="btn" data-act="copy" data-key="copy">${icon('clipboard')}Copier ma liste de courses</button>
+  </div>`;
+
+  const groups = byCat(state.items).map((g) => ({ ...g, shown: g.items.filter(matchFilter) })).filter((g) => g.shown.length);
+  if (!groups.length) h += `<p class="card empty">Aucun item dans ce filtre.</p>`;
+  for (const g of groups) {
+    const ok = g.items.filter(settled).length;
+    h += `<section class="card" aria-labelledby="cat-${g.cat.id}">
+      <div class="card-h"><h2 id="cat-${g.cat.id}">${esc(g.cat.name)}</h2><span class="count" aria-label="${ok} réglés sur ${g.items.length}">${ok}/${g.items.length}</span></div>
+      <ul class="items">${g.shown.map(itemHTML).join('')}</ul>
+    </section>`;
+  }
+
+  h += `<form class="card add" data-form="item" autocomplete="off">
+    <h2>Ajouter un item</h2>
+    <div class="add-row">
+      <label class="field"><span>Catégorie</span><select name="cat" data-key="add-cat">${CATS.map((c) => `<option value="${c.id}"${ui.addCat === c.id ? ' selected' : ''}>${esc(c.name)}</option>`).join('')}</select></label>
+      <label class="field"><span>Nom</span><input type="text" name="name" maxlength="80" data-key="add-name" placeholder="Ex. : Gourde filtrante"></label>
+      <button type="submit" class="btn primary">${icon('plus')}Ajouter</button>
+    </div>
+  </form>`;
+  return h;
+}
+
+/* ---------- Départ ---------- */
+function packTags(it) {
+  const x = gv(it.id);
+  if (x.s === 'todo') return '<span class="tag tag-todo">à vérifier</span>';
+  if (x.s === 'buy' && !x.done) return '<span class="tag tag-buy">pas encore acheté</span>';
+  if (x.s === 'borrow' && !x.done) return '<span class="tag tag-borrow">pas encore emprunté</span>';
+  if (x.s === 'borrow' && x.done && x.from) return `<span class="tag tag-ok">à ${esc(x.from)}</span>`;
+  return '';
+}
+
+function renderDepart() {
+  const list = state.items.filter((it) => !it.f && gv(it.id).s !== 'skip');
+  const n = list.filter((it) => state.pack[it.id]).length;
+  const all = list.length > 0 && n === list.length;
+  let h = `<section class="card">
+    <p class="big"><strong>${n}</strong>/${list.length} items dans le sac</p>
+    <div class="bar" style="margin-top:12px" role="progressbar" aria-label="Items dans le sac" aria-valuemin="0" aria-valuemax="${list.length}" aria-valuenow="${n}">
+      ${barSpan('d-ok', 'b-ok', list.length ? (n / list.length) * 100 : 0)}
+    </div>
+    ${all ? '<p class="done-msg">Tout est dans le sac, bon voyage !</p>' : ''}
+    <div style="margin-top:12px"><button type="button" class="btn" data-act="unpack-all" data-key="unpack" ${n ? '' : 'disabled'}>${icon('undo')}Tout décocher</button></div>
+  </section>`;
+  if (!list.length) h += `<p class="card empty">Rien à mettre dans le sac pour l'instant.</p>`;
+  for (const g of byCat(list)) {
+    const c = g.items.filter((it) => state.pack[it.id]).length;
+    h += `<section class="card" aria-labelledby="pk-${g.cat.id}">
+      <div class="card-h"><h2 id="pk-${g.cat.id}">${esc(g.cat.name)}</h2><span class="count">${c}/${g.items.length}</span></div>
+      <ul class="pack-list">${g.items.map((it) => {
+        const on = !!state.pack[it.id];
+        return `<li><label class="pack-row${on ? ' on' : ''}"><input type="checkbox" data-chk="pack" data-id="${esc(it.id)}" data-key="pack-${esc(it.id)}" ${on ? 'checked' : ''}><span class="txt"><span class="nm">${esc(it.name)}</span>${packTags(it)}</span></label></li>`;
+      }).join('')}</ul>
+    </section>`;
+  }
+  return h;
+}
+
+/* ---------- Tâches ---------- */
+const isMine = (t) => t.who === 'Édouard' || t.who === 'Tous';
+
+function renderTaches() {
+  const today = todayISO();
+  const list = state.tasks
+    .filter((t) => ui.taskFilter === 'all' || isMine(t))
+    .sort((a, b) => (a.done - b.done) || (a.due || '9999').localeCompare(b.due || '9999'));
+  const done = list.filter((t) => t.done).length;
+  let h = `<div class="toolbar">
+    <div class="chips" role="group" aria-label="Filtrer les tâches">
+      <button type="button" class="chip" data-act="task-filter" data-f="all" data-key="tf-all" aria-pressed="${ui.taskFilter === 'all'}">Toutes</button>
+      <button type="button" class="chip" data-act="task-filter" data-f="mine" data-key="tf-mine" aria-pressed="${ui.taskFilter === 'mine'}">Les miennes</button>
+    </div>
+    <span class="count" style="margin-left:auto">${done}/${list.length} faites</span>
+  </div>`;
+  if (!list.length) h += `<p class="card empty">Aucune tâche.</p>`;
+  h += `<ul class="tasks">${list.map((t) => {
+    const late = !t.done && t.due && t.due < today;
+    const many = t.who === 'Tous' || t.who.includes(',');
+    return `<li class="card task${t.done ? ' done' : ''}">
+      <label class="task-chk"><input type="checkbox" data-chk="task" data-id="${esc(t.id)}" data-key="tk-${esc(t.id)}" ${t.done ? 'checked' : ''}><span class="sr-only">Faite : ${esc(t.title)}</span></label>
+      <div>
+        <p class="task-title">${esc(t.title)}</p>
+        <p class="who">${icon(many ? 'users' : 'user')}${esc(t.who)}</p>
+        <div class="due">
+          <label>Échéance <input type="date" data-field="due" data-id="${esc(t.id)}" data-key="due-${esc(t.id)}" value="${esc(t.due)}"></label>
+          ${late ? '<span class="tag tag-late">en retard</span>' : ''}
+        </div>
+        ${t.note ? `<p class="note" style="margin-top:8px">${esc(t.note)}</p>` : ''}
+      </div>
+      <button type="button" class="icon-btn" data-act="del-task" data-id="${esc(t.id)}" data-key="dt-${esc(t.id)}" aria-label="Supprimer la tâche ${esc(t.title)}">${icon('x')}</button>
+    </li>`;
+  }).join('')}</ul>`;
+
+  h += `<form class="card add" data-form="task" autocomplete="off" style="margin-top:14px">
+    <h2>Ajouter une tâche</h2>
+    <div class="task-add">
+      <label class="field f-title"><span>Titre</span><input type="text" name="title" maxlength="120" data-key="task-title" placeholder="Ex. : Réserver l'Airbnb"></label>
+      <label class="field"><span>Pour qui</span><select name="who" data-key="task-who">${WHO.map((w) => `<option${ui.addWho === w ? ' selected' : ''}>${esc(w)}</option>`).join('')}</select></label>
+      <label class="field"><span>Échéance</span><input type="date" name="due" data-key="task-due"></label>
+      <button type="submit" class="btn primary">${icon('plus')}Ajouter</button>
+    </div>
+  </form>`;
+  return h;
+}
+
+/* ---------- Budget ---------- */
+function renderBudget() {
+  const s = gearStats();
+  const trip = sum(state.budget);
+  const total = trip + s.boughtSum;
+  const max = Math.max(...state.budget, s.boughtSum, 1);
+  const w = (n) => ((n / max) * 100).toFixed(2) + '%';
+
+  let h = `<section class="card">
+    <h2 class="budget-title">${fmt(total)} : mon total estimé</h2>
+    <div class="figs">
+      <div class="fig"><span class="v">${fmt(trip)}</span><span class="k">dépenses du voyage</span></div>
+      <div class="fig"><span class="v">${fmt(s.boughtSum)}</span><span class="k">matériel déjà acheté</span></div>
+      ${s.buyOpenSum > 0 ? `<div class="fig f-buy"><span class="v">${fmt(s.buyOpenSum)}</span><span class="k">matériel encore à acheter (pas compté)</span></div>` : ''}
+    </div>
+  </section>
+  <section class="card" aria-label="Postes du budget">
+    <ul class="blines">`;
+  BUDGET.forEach((b, i) => {
+    const v = state.budget[i];
+    const mod = v !== b.amt;
+    h += `<li class="bline">
+      <div><p class="bl-label">${esc(b.label)}</p><p class="bl-sub">${esc(b.cat)} · ${esc(b.base)}</p></div>
+      <div class="bl-amt">
+        <span class="money"><input type="text" inputmode="decimal" autocomplete="off" aria-label="Montant : ${esc(b.label)}" data-field="budget" data-i="${i}" data-key="bud-${i}" value="${esc(numStr(v))}"><span aria-hidden="true">$</span></span>
+        ${mod ? `<p class="bl-orig">fichier : ${fmt(b.amt)} · <button type="button" class="linkbtn" data-act="budget-reset" data-i="${i}" data-key="bres-${i}">rétablir</button></p>` : ''}
+      </div>
+      <div class="bl-bar" aria-hidden="true"><span style="width:${w(v)}"></span></div>
+    </li>`;
+  });
+  h += `<li class="bline calc">
+      <div><p class="bl-label">Achats de matériel perso</p><p class="bl-sub">${plural(s.boughtN, 'item coché', 'items cochés')} « Acheté »</p></div>
+      <div class="bl-amt"><a class="calc-amt" href="#materiel" aria-label="${fmt(s.boughtSum)}, voir le matériel">${fmt(s.boughtSum)}</a></div>
+      <div class="bl-bar" aria-hidden="true"><span style="width:${w(s.boughtSum)}"></span></div>
+    </li>
+    <li class="bline total"><p>Total</p><p class="amt">${fmt(total)}</p></li>
+    </ul>
+    <p class="budget-note">Montants par personne tirés du fichier Budget (4 participants). L'option auberge Beez Neez (125 $ au lieu de 400 $) n'est pas comptée. Non inclus : restos hors rivière, assurances personnelles.</p>
+  </section>
+  <section class="card">
+    <h2 style="font-size:18px;font-weight:800">Sauvegarde</h2>
+    <p class="note">Les données restent sur cet appareil. Exporte-les de temps en temps : elles peuvent être effacées avec les données du navigateur.</p>
+    <div class="backup-row">
+      <button type="button" class="btn" data-act="export" data-key="export">${icon('download')}Exporter mes données</button>
+      <button type="button" class="btn" data-act="import" data-key="import">${icon('upload')}Importer</button>
+    </div>
+  </section>`;
+  return h;
+}
+
+/* ---------- Itinéraire ---------- */
+function renderItineraire() {
+  return `<section class="card">
+    <div class="counters" style="margin-top:0">
+      <div class="counter"><span class="n">3 j</span><span class="l">Préparation</span></div>
+      <div class="counter c-river"><span class="n">8 j</span><span class="l">Sur l'eau</span></div>
+      <div class="counter"><span class="n">2 j</span><span class="l">Retour</span></div>
+    </div>
+  </section>
+  <section class="card" aria-label="Jour par jour">
+    <ol class="days" style="list-style:none;margin:0;padding:0">
+      ${ITIN.map((d) => `<li class="day${d.river ? ' river' : ''}">
+        <div><div class="dn${d.d.length > 2 ? ' range' : ''}">${esc(d.d)}</div><div class="dw">${esc(d.w)} · août</div></div>
+        <div>${d.river ? '<span class="tag tag-river">Sur la rivière</span>' : ''}<ul>${d.t.map((t) => `<li>${esc(t)}</li>`).join('')}</ul></div>
+      </li>`).join('')}
+    </ol>
+  </section>`;
+}
+
+/* ---------- Rendu général ---------- */
+const RENDER = { materiel: renderMateriel, depart: renderDepart, taches: renderTaches, budget: renderBudget, itineraire: renderItineraire };
+const main = document.getElementById('main');
+const currentTab = () => { const h = location.hash.slice(1); return RENDER[h] ? h : 'materiel'; };
+
+function render() {
+  clearTimeout(renderTimer); renderTimer = null; pendingRender = false;
+  const tab = currentTab();
+  const focusKey = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.key : null;
+  main.innerHTML = RENDER[tab]();
+  document.querySelectorAll('.tab').forEach((a) => {
+    if (a.dataset.tab === tab) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  });
+  if (focusKey) {
+    const el = main.querySelector(`[data-key="${CSS.escape(focusKey)}"]`);
+    if (el) el.focus({ preventScroll: true });
+  }
+  animateBars(main);
+}
+
+/* Re-rendu différé de 250 ms après la saisie d'un champ : un clic sur la case voisine n'est pas avalé.
+   Si l'utilisateur est en train d'écrire dans un autre champ, on attend qu'il en sorte. */
+let renderTimer = null;
+let pendingRender = false;
+const isTyping = () => {
+  const a = document.activeElement;
+  return a && main.contains(a) && (a.tagName === 'SELECT' || (a.tagName === 'INPUT' && a.type !== 'checkbox'));
+};
+function scheduleRender() {
+  clearTimeout(renderTimer);
+  renderTimer = setTimeout(() => {
+    renderTimer = null;
+    if (isTyping()) { pendingRender = true; return; }
+    render();
+  }, 250);
+}
+function commit() { save(); render(); }
+
+/* =========================================================
+   5. Événements
+   ========================================================= */
+
+/* ---------- Toast ---------- */
+const toastEl = document.getElementById('toast');
+const toastMsg = document.getElementById('toast-msg');
+const toastUndoBtn = document.getElementById('toast-undo');
+let toastTimer = null;
+let toastUndo = null;
+function toast(msg, undo) {
+  toastMsg.textContent = msg;
+  toastUndo = undo || null;
+  toastUndoBtn.hidden = !undo;
+  toastEl.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(hideToast, undo ? 7000 : 3000);
+}
+function hideToast() { toastEl.hidden = true; toastUndo = null; }
+
+/* ---------- Actions ---------- */
+function delItem(id) {
+  const idx = state.items.findIndex((i) => i.id === id);
+  if (idx < 0) return;
+  const it = state.items[idx], gear = state.gear[id], pk = state.pack[id];
+  state.items.splice(idx, 1);
+  delete state.gear[id]; delete state.pack[id];
+  commit();
+  toast('Supprimé', () => {
+    state.items.splice(Math.min(idx, state.items.length), 0, it);
+    if (gear) state.gear[id] = gear;
+    if (pk) state.pack[id] = true;
+    commit();
+  });
+}
+function delTask(id) {
+  const idx = state.tasks.findIndex((t) => t.id === id);
+  if (idx < 0) return;
+  const t = state.tasks[idx];
+  state.tasks.splice(idx, 1);
+  commit();
+  toast('Tâche supprimée', () => { state.tasks.splice(Math.min(idx, state.tasks.length), 0, t); commit(); });
+}
+
+function shoppingText() {
+  const buy = [], bor = [];
+  for (const g of byCat(state.items)) {
+    for (const it of g.items) {
+      if (it.f) continue;
+      const x = gv(it.id);
+      if (x.s === 'buy' && !x.done) {
+        let l = '- ' + it.name;
+        if (x.price) l += ` (${fmtPlain(x.price)})`;
+        if (x.url) l += ' ' + x.url;
+        buy.push(l);
+      } else if (x.s === 'borrow' && !x.done) {
+        bor.push('- ' + it.name + (x.from ? ` (de ${x.from})` : ''));
+      }
+    }
+  }
+  if (!buy.length && !bor.length) return null;
+  let t = 'Yukon 2027 – ma liste de courses';
+  if (buy.length) t += '\n\nÀ acheter\n' + buy.join('\n');
+  if (bor.length) t += '\n\nÀ emprunter\n' + bor.join('\n');
+  return t;
+}
+async function copyText(t) {
+  try { await navigator.clipboard.writeText(t); return true; }
+  catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = t; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (_) { /* ignoré */ }
+    ta.remove();
+    return ok;
+  }
+}
+async function copyList() {
+  const t = shoppingText();
+  if (!t) { toast('Rien à acheter ni à emprunter pour l\'instant'); return; }
+  toast((await copyText(t)) ? 'Liste de courses copiée' : 'Impossible de copier la liste');
+}
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `yukon-2027-sauvegarde-${todayISO()}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  toast('Sauvegarde téléchargée');
+}
+function isBackup(o) {
+  return isObj(o) && Array.isArray(o.items) && Array.isArray(o.tasks) && isObj(o.gear) && isObj(o.pack) &&
+    o.items.every((i) => isObj(i) && typeof i.id === 'string' && typeof i.name === 'string') &&
+    o.tasks.every((t) => isObj(t) && typeof t.id === 'string' && typeof t.title === 'string');
+}
+function importData(file) {
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = () => {
+    let obj;
+    try { obj = JSON.parse(r.result); } catch (e) { toast('Fichier illisible : ce n\'est pas du JSON valide'); return; }
+    if (!isBackup(obj)) { toast('Ce fichier n\'est pas une sauvegarde Yukon 2027'); return; }
+    const prev = state;
+    state = normalize(obj);
+    commit();
+    toast('Données importées', () => { state = prev; commit(); });
+  };
+  r.onerror = () => toast('Impossible de lire le fichier');
+  r.readAsText(file);
+}
+
+/* ---------- Clics ---------- */
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-act]');
+  if (!b) return;
+  const id = b.dataset.id;
+  switch (b.dataset.act) {
+    case 'status': {
+      const x = gset(id);
+      x.s = x.s === b.dataset.s ? 'todo' : b.dataset.s;   // retoucher le statut actif → « À vérifier »
+      commit(); break;
+    }
+    case 'filter': ui.filter = b.dataset.f; saveUi(); render(); break;
+    case 'task-filter': ui.taskFilter = b.dataset.f; saveUi(); render(); break;
+    case 'copy': copyList(); break;
+    case 'del-item': delItem(id); break;
+    case 'del-task': delTask(id); break;
+    case 'unpack-all': {
+      const prev = { ...state.pack };
+      state.pack = {};
+      commit();
+      toast('Tout est décoché', () => { state.pack = prev; commit(); });
+      break;
+    }
+    case 'budget-reset': { const i = +b.dataset.i; state.budget[i] = BUDGET[i].amt; commit(); break; }
+    case 'export': exportData(); break;
+    case 'import': document.getElementById('import-file').click(); break;
+    case 'toast-undo': { const fn = toastUndo; hideToast(); if (fn) { fn(); toast('Annulé'); } break; }
+    case 'install': installApp(); break;
+  }
+});
+
+/* ---------- Cases à cocher et champs (enregistrés sur « change ») ---------- */
+document.addEventListener('change', (e) => {
+  const t = e.target;
+  if (t.id === 'import-file') { importData(t.files[0]); t.value = ''; return; }
+  const id = t.dataset.id;
+  if (t.dataset.chk) {
+    if (t.dataset.chk === 'done') gset(id).done = t.checked;
+    else if (t.dataset.chk === 'pack') { if (t.checked) state.pack[id] = true; else delete state.pack[id]; }
+    else if (t.dataset.chk === 'task') { const k = state.tasks.find((x) => x.id === id); if (k) k.done = t.checked; }
+    commit();
+    return;
+  }
+  switch (t.dataset.field) {
+    case 'price': gset(id).price = parseNum(t.value); break;
+    case 'url': gset(id).url = normUrl(t.value); t.value = gset(id).url; break;
+    case 'from': gset(id).from = t.value.trim(); break;
+    case 'due': { const k = state.tasks.find((x) => x.id === id); if (k) k.due = t.value; break; }
+    case 'budget': { const v = parseNum(t.value); state.budget[+t.dataset.i] = v == null ? 0 : v; break; }
+    default:
+      if (t.name === 'cat') { ui.addCat = t.value; saveUi(); }
+      if (t.name === 'who') { ui.addWho = t.value; saveUi(); }
+      return;
+  }
+  save();
+  scheduleRender();
+});
+document.addEventListener('focusout', () => { if (pendingRender) scheduleRender(); });
+
+/* ---------- Formulaires d'ajout ---------- */
+document.addEventListener('submit', (e) => {
+  const f = e.target;
+  if (!f.dataset.form) return;
+  e.preventDefault();
+  if (f.dataset.form === 'item') {
+    const name = f.elements.name.value.trim();
+    if (!name) { toast('Donne un nom à l\'item'); f.elements.name.focus(); return; }
+    ui.addCat = f.elements.cat.value; saveUi();
+    state.items.push({ id: newId('u'), cat: ui.addCat, name, f: false, o: false, note: '', custom: true });
+    if (ui.filter !== 'all' && ui.filter !== 'todo') ui.filter = 'all';
+    commit();
+    toast(`Ajouté : ${name}`);
+    const inp = main.querySelector('[data-key="add-name"]'); if (inp) inp.focus({ preventScroll: true });
+  } else if (f.dataset.form === 'task') {
+    const title = f.elements.title.value.trim();
+    if (!title) { toast('Donne un titre à la tâche'); f.elements.title.focus(); return; }
+    ui.addWho = f.elements.who.value; saveUi();
+    state.tasks.push({ id: newId('t'), title, who: ui.addWho, due: f.elements.due.value || '', note: '', done: false });
+    commit();
+    toast('Tâche ajoutée');
+  }
+});
+
+/* ---------- Routage par hash ---------- */
+window.addEventListener('hashchange', () => {
+  ui.tab = currentTab(); saveUi();
+  render();
+  window.scrollTo(0, 0);
+});
+
+/* =========================================================
+   6. En-tête : épinettes, compte à rebours
+   ========================================================= */
+(function drawSpruces() {
+  let s = '';
+  for (let i = 0; i < 34; i++) {
+    const x = i * 36 + (i % 3) * 9 - 10;
+    const h = 38 + ((i * 37) % 5) * 9;
+    s += `<use href="#spr" transform="translate(${x} ${120 - h}) scale(${(h / 60).toFixed(4)})"/>`;
+  }
+  document.getElementById('spruces').innerHTML = s;
+})();
+
+function updateCountdown() {
+  const now = new Date();
+  const days = Math.round((Date.UTC(2027, 7, 19) - Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())) / 864e5);
+  const n = document.getElementById('cd-n');
+  const l = document.getElementById('cd-l');
+  if (days > 0) {
+    n.textContent = days.toLocaleString('fr-CA');
+    l.textContent = days > 1 ? 'jours avant Whitehorse' : 'jour avant Whitehorse';
+    l.hidden = false;
+  } else {
+    n.textContent = 'C\'est parti';
+    l.hidden = true;
+  }
+}
+
+/* Barre d'onglets */
+document.getElementById('tabbar').innerHTML = TABS.map((t) =>
+  `<a class="tab" href="#${t.id}" data-tab="${t.id}">${icon(t.icon)}<span>${t.label}</span></a>`).join('');
+
+/* =========================================================
+   7. PWA : installation et service worker
+   ========================================================= */
+const installBtn = document.getElementById('install');
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.hidden = false;
+});
+async function installApp() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  try { await deferredPrompt.userChoice; } catch (e) { /* ignoré */ }
+  deferredPrompt = null;
+  installBtn.hidden = true;
+}
+window.addEventListener('appinstalled', () => { installBtn.hidden = true; toast('Application installée'); });
+
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const isStandalone = navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+if (isIOS && !isStandalone) document.getElementById('ios-hint').hidden = false;
+
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('service-worker.js').catch(() => {}); });
+}
+
+/* =========================================================
+   8. Démarrage
+   ========================================================= */
+if (!RENDER[location.hash.slice(1)] && RENDER[ui.tab]) history.replaceState(null, '', '#' + ui.tab);
+updateCountdown();
+document.addEventListener('visibilitychange', () => { if (!document.hidden) updateCountdown(); });
+render();
+</script>
+</body>
+</html>
