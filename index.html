@@ -264,7 +264,39 @@ input[type="checkbox"] { width: 22px; height: 22px; margin: 0; accent-color: var
 .b-ok { background: var(--have); }
 .b-buy { background: var(--buy); }
 .b-borrow { background: var(--borrow); }
-@media (prefers-reduced-motion: reduce) { .bar > span { transition: none; } }
+/* ---------- Animations des boutons ---------- */
+button, .tab, .chip, .btn, .calc-amt, .pack-row { -webkit-tap-highlight-color: transparent; }
+button, .tab, .btn, .pack-row, input[type="checkbox"] {
+  transition: transform .14s cubic-bezier(.22, 1, .36, 1), background-color .2s ease,
+              color .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+/* Enfoncement au toucher */
+button:not(:disabled):active, .btn:active { transform: scale(.95); }
+.seg-btn:active { transform: scale(.92); }
+.pack-row:active { transform: scale(.985); }
+input[type="checkbox"]:active { transform: scale(.85); }
+.tab .ico { transition: transform .2s cubic-bezier(.22, 1, .36, 1); }
+.tab:active .ico { transform: scale(.82); }
+.tab[aria-current="page"] .ico { transform: translateY(-1px); }
+/* Petit rebond sur l'élément qui vient d'être choisi ou coché */
+.pop { animation: pop .32s cubic-bezier(.22, 1, .36, 1); }
+@keyframes pop {
+  0% { transform: scale(.88); }
+  55% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+.tab.pop .ico { animation: pop .36s cubic-bezier(.22, 1, .36, 1); }
+.tab.pop { animation: none; }
+/* Toast qui glisse vers le haut */
+.toast:not([hidden]) { animation: toast-in .24s cubic-bezier(.22, 1, .36, 1); }
+@keyframes toast-in {
+  from { opacity: 0; transform: translate(-50%, 12px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+  button:active, .btn:active, .pack-row:active, input[type="checkbox"]:active, .tab:active .ico { transform: none !important; }
+}
 
 .counters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
 .counter { border-radius: 12px; padding: 10px 8px; text-align: center; background: var(--track); }
@@ -1092,8 +1124,16 @@ function render() {
     const el = main.querySelector(`[data-key="${CSS.escape(focusKey)}"]`);
     if (el) el.focus({ preventScroll: true });
   }
+  if (popKey) {
+    const el = main.querySelector(`[data-key="${CSS.escape(popKey)}"]`);
+    if (el) el.classList.add('pop');
+    popKey = null;
+  }
   animateBars(main);
 }
+/* Élément qui vient d'être touché : il rebondit après le re-rendu */
+let popKey = null;
+const popOnly = (el) => { el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); };
 
 /* Re-rendu différé de 250 ms après la saisie d'un champ : un clic sur la case voisine n'est pas avalé.
    Si l'utilisateur est en train d'écrire dans un autre champ, on attend qu'il en sorte. */
@@ -1232,6 +1272,7 @@ document.addEventListener('click', (e) => {
   const b = e.target.closest('[data-act]');
   if (!b) return;
   const id = b.dataset.id;
+  if (b.dataset.key && (b.dataset.act === 'status' || b.dataset.act === 'filter' || b.dataset.act === 'task-filter')) popKey = b.dataset.key;
   switch (b.dataset.act) {
     case 'status': {
       const x = gset(id);
@@ -1264,6 +1305,7 @@ document.addEventListener('change', (e) => {
   if (t.id === 'import-file') { importData(t.files[0]); t.value = ''; return; }
   const id = t.dataset.id;
   if (t.dataset.chk) {
+    if (t.checked) popKey = t.dataset.key;
     if (t.dataset.chk === 'done') gset(id).done = t.checked;
     else if (t.dataset.chk === 'pack') { if (t.checked) state.pack[id] = true; else delete state.pack[id]; }
     else if (t.dataset.chk === 'task') { const k = state.tasks.find((x) => x.id === id); if (k) k.done = t.checked; }
@@ -1314,7 +1356,22 @@ document.addEventListener('submit', (e) => {
 window.addEventListener('hashchange', () => {
   ui.tab = currentTab(); saveUi();
   render();
-  window.scrollTo(0, 0);
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  const t = document.querySelector(`.tab[data-tab="${currentTab()}"]`);
+  if (t) popOnly(t);
+});
+
+/* Toucher un onglet du menu ramène toujours en haut de la page,
+   y compris l'onglet déjà ouvert (défilement doux dans ce cas) */
+document.addEventListener('click', (e) => {
+  const tab = e.target.closest('.tab');
+  if (!tab || tab.dataset.tab !== currentTab()) return;   // autre onglet : géré par hashchange
+  e.preventDefault();
+  const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.scrollTo({ top: 0, left: 0, behavior: smooth ? 'smooth' : 'instant' });
+  // Filet de sécurité : si le défilement doux n'a pas abouti, on saute en haut
+  if (smooth) setTimeout(() => { if (window.scrollY > 4) window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); }, 700);
+  popOnly(tab);
 });
 
 /* =========================================================
