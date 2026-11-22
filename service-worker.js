@@ -54,6 +54,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   if (url.origin !== self.location.origin) return;
+  if (url.pathname.includes('/api/')) return;   // relais de prix : jamais en cache
 
   // Page, manifest et service worker : réseau d'abord pour que les mises à jour
   // arrivent dès la 1re ouverture. Si le réseau ne répond pas en 4 s (ou pas du
