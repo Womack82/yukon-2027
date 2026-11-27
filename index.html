@@ -772,7 +772,7 @@ const icon = (name) => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
 /* =========================================================
    2. État et sauvegarde
    ========================================================= */
-const APP_VERSION = '1.6';   // à augmenter à chaque publication (1.2, 1.3…)
+const APP_VERSION = '1.7';   // à augmenter à chaque publication (1.2, 1.3…)
 
 /* Taxes ajoutées au prix trouvé sur la page d'un magasin */
 const TAXES = [
@@ -1654,6 +1654,41 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
 if (!RENDER[location.hash.slice(1)] && RENDER[ui.tab]) history.replaceState(null, '', '#' + ui.tab);
 updateCountdown();
 document.addEventListener('visibilitychange', () => { if (!document.hidden) updateCountdown(); });
+
+/* Mise à jour automatique : à l'ouverture et au retour dans l'app, on regarde le
+   numéro de version en ligne (demande qui contourne le cache). S'il est plus récent,
+   l'app se recharge toute seule, une seule fois par version et par session. On ne
+   recharge pas pendant qu'une fenêtre est ouverte (saisie en cours). */
+function versionPlusRecente(enLigne, actuelle) {
+  const a = enLigne.split('.').map(Number), b = actuelle.split('.').map(Number);
+  for (let i = 0; i < Math.max(a.length, b.length); i++) {
+    const x = a[i] || 0, y = b[i] || 0;
+    if (x !== y) return x > y;
+  }
+  return false;
+}
+async function verifierNouvelleVersion() {
+  try {
+    if (location.protocol === 'file:' || document.querySelector('dialog[open]')) return;
+    // Le navigateur vérifie aussi si le service worker a changé
+    const enregistrement = await navigator.serviceWorker?.getRegistration();
+    if (enregistrement) await enregistrement.update();
+    const reponse = await fetch(`index.html?verif=${Date.now()}`, { cache: 'no-store' });
+    if (!reponse.ok) return;
+    const trouve = (await reponse.text()).match(/const APP_VERSION = '([0-9.]+)'/);
+    if (!trouve || !versionPlusRecente(trouve[1], APP_VERSION)) return;
+    let dejaRecharge = null;
+    try { dejaRecharge = sessionStorage.getItem('yukon2027-rechargee-vers'); } catch {}
+    if (dejaRecharge === trouve[1]) return;
+    try { sessionStorage.setItem('yukon2027-rechargee-vers', trouve[1]); } catch {}
+    location.replace(`${location.pathname}?v=${trouve[1]}-${Date.now()}`);
+  } catch {
+    // Pas de réseau ou navigateur ancien : on reste sur la version en cours
+  }
+}
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') verifierNouvelleVersion(); });
+verifierNouvelleVersion();
+
 render();
 </script>
 </body>

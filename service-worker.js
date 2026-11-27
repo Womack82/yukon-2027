@@ -3,7 +3,7 @@
    - Cache d'abord pour les icônes
    - Stale-while-revalidate pour Google Fonts */
 
-const CACHE = 'yukon2027-v4';
+const CACHE = 'yukon2027-v5';
 const FONT_CACHE = 'yukon2027-fonts-v1';
 const SHELL = [
   './',
@@ -55,6 +55,8 @@ self.addEventListener('fetch', (event) => {
 
   if (url.origin !== self.location.origin) return;
   if (url.pathname.includes('/api/')) return;   // relais de prix : jamais en cache
+  // Vérification de version (?verif=…) : réseau direct, jamais mis en cache ni servi depuis le cache
+  if (url.searchParams.has('verif')) return;
 
   // Page, manifest et service worker : réseau d'abord pour que les mises à jour
   // arrivent dès la 1re ouverture. Si le réseau ne répond pas en 4 s (ou pas du
